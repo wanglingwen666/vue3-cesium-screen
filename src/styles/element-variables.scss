@@ -1,0 +1,38 @@
+
+
+@use 'sass:map';
+//全局主题色
+@forward 'element-plus/theme-chalk/src/common/var.scss' with (
+  $colors: (
+    'primary': (
+      'base': #005bad
+    ),
+    'success': (
+      'base': #00a85a
+    ),
+    'warning': (
+      'base': #f6ad55
+    ),
+    'danger': (
+      'base': #dc3c3a
+    )
+  )
+);
+//修改组件样式变量
+:root {
+  --el-bg-color: transparent;
+  --el-box-shadow-light: 0px 0px 8px 0px rgba(0, 91, 173, 0.22);
+
+  .el-card {
+    --el-card-border-radius: 8px;
+  }
+  .el-table {
+    --el-table-header-text-color: #ffffff;
+    --el-table-bg-color: transparent;
+    --el-table-header-bg-color: #82838f90;
+
+    --el-table-border-color: #6e6a72;
+    --el-table-text-color:#fff;
+    --el-table-row-hover-bg-color:#82838f50;
+  }
+}
