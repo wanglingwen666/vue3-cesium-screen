@@ -1,10 +1,10 @@
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import BoxPane from '@/components/box-pane/box-pane.vue'
 import EchartsWrap from '@/base-ui/eharts-wrap/echarts-wrap.vue'
 import ResourceInfo from '@/components/resource-info/resource-info.vue'
 import SafetyInfo from '@/components/safety-info/safety-info.vue'
-import { energyOptions, medicalOptions, visitOptions } from './config/echart-options'
+import { energyOptions, medicalOptions, buildVisitOptions } from './config/echart-options'
 import type { ISafeInfo } from '@/types/safety-info'
 
 const safeInfo: ISafeInfo = {
@@ -39,6 +39,19 @@ const areaData = [
     label: '区域5'
   }
 ]
+
+const computedVisitOptions = computed(() => {
+  return buildVisitOptions(data1.value, data2.value)
+})
+
+const data1 = ref([100, 132, 101, 134, 90, 230])
+const data2 = ref([220, 182, 191, 234, 290, 330])
+const onSelectChange = () => {
+  data1.value.forEach((_v, i) => {
+    data1.value[i] = Math.ceil(Math.random() * 100)
+    data2.value[i] = Math.ceil(Math.random() * 300)
+  })
+}
 </script>
 
 <template>
@@ -63,12 +76,12 @@ const areaData = [
       <div class="title padding0">到访管理</div>
       <div class="area">
         <div class="area-title">选择区域</div>
-        <el-select class="area-select" v-model="areaValue" placeholder="请选择">
+        <el-select class="area-select" v-model="areaValue" placeholder="请选择" @change="onSelectChange">
           <el-option v-for="item in areaData" :key="item.value" :label="item.label" :value="item.value" />
         </el-select>
       </div>
       <div class="bar-charts">
-        <echarts-wrap :options="visitOptions" />
+        <echarts-wrap :options="computedVisitOptions" />
       </div>
     </box-pane>
   </div>

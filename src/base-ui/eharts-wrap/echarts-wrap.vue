@@ -1,11 +1,13 @@
 <script lang="ts" setup>
 import { ref, onMounted, watch, nextTick } from 'vue'
-import type { DirectiveBinding } from 'vue'
 import * as echarts from 'echarts/core'
 import { EChartsOption } from 'echarts'
 import { CanvasRenderer } from 'echarts/renderers'
 import { LineChart, BarChart, PieChart } from 'echarts/charts'
 import { GridComponent, TooltipComponent, LegendComponent, TitleComponent } from 'echarts/components'
+// import useEchart from './hooks/use-echarts'
+// import type { DirectiveBinding } from 'vue'
+import type { IRenderer } from './type'
 echarts.use([CanvasRenderer, LineChart, BarChart, GridComponent, TooltipComponent, LegendComponent, TitleComponent, PieChart])
 
 const props = withDefaults(
@@ -13,49 +15,71 @@ const props = withDefaults(
     options: EChartsOption
     merge?: boolean
     theme?: string
+    renderer?: IRenderer
   }>(),
   {
     merge: false,
-    theme: ''
+    theme: '',
+    renderer: 'canvas'
   }
 )
 
 //必须以 vNameOfDirective 的形式来命名本地自定义指令，以使得它们可以直接在模板中使用。
-const vResize = {
-  mounted(el: Element, binding: DirectiveBinding) {
-    const handler = binding.value
-    window.addEventListener('resize', handler)
-  },
+// const vResize = {
+//   mounted(_el: Element, binding: DirectiveBinding) {
+//     const handler = binding.value
+//     window.addEventListener('resize', handler, false)
+//   },
 
-  unmounted(el: Element, binding: DirectiveBinding) {
-    window.removeEventListener('resize', binding.value)
-  }
-}
+//   unmounted(_el: Element, binding: DirectiveBinding) {
+//     window.removeEventListener('resize', binding.value, false)
+//   }
+// }
 
-const chart = ref<ReturnType<typeof echarts.init>>()
-const container = ref<HTMLDivElement | null>(null)
+// const chartInstance = ref<ReturnType<typeof echarts.init>>()
+let chartInstance = {} as ReturnType<typeof echarts.init>
+const echartsRef = ref<HTMLElement>()
 const updated = () => {
   nextTick(() => {
-    chart.value && chart.value.setOption(props.options, !props.merge)
+    // chartInstance.value && chartInstance.value.setOption(props.options, !props.merge)
+    chartInstance && chartInstance.setOption(props.options, !props.merge)
   })
 }
 watch(() => props.options, updated, {
   deep: true,
   immediate: true
 })
-const resizes = () => {
-  console.log(111)
-  chart.value && chart.value.resize() // 这里暂时是有问题的
-}
 
 onMounted(() => {
-  chart.value = echarts.init(container.value as HTMLDivElement, props.theme)
+  // chartInstance.value = echarts.init(echartsRef.value!, props.theme, { renderer: props.renderer })
+  chartInstance = echarts.init(echartsRef.value!, props.theme, { renderer: props.renderer })
+  window.addEventListener(
+    'resize',
+    () => {
+      // chartInstance.value && chartInstance.value.resize()
+      chartInstance && chartInstance.resize()
+    },
+    false
+  )
 })
+// const resizes = () => {
+//   // chartInstance.value && chartInstance.value.resize() // 这里暂时是有问题的
+//   chartInstance && chartInstance.resize()
+// }
+
+// const echartsRef = ref<HTMLDivElement>()
+// onMounted(() => {
+//   const { setOptions } = useEchart(echartsRef.value!, props.theme, { renderer: props.renderer })
+//   watchEffect(() => {
+//     setOptions(props.options)
+//   })
+// })
 </script>
 
 <template>
-  <div class="echarts-wrap" v-resize.throttle.80="resizes">
-    <div class="chart" ref="container"></div>
+  <!-- <div class="echarts-wrap" v-resize.throttle.80="resizes"> -->
+  <div class="echarts-wrap">
+    <div class="chart" ref="echartsRef"></div>
     <slot />
   </div>
 </template>

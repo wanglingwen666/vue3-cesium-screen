@@ -1,5 +1,6 @@
 import * as echarts from 'echarts/core'
 import { EChartsOption } from 'echarts'
+import { deepCopy } from '@/utils'
 
 let data = [
   { value: 59, name: '' },
@@ -159,98 +160,100 @@ export const medicalOptions: EChartsOption = {
   ]
 }
 
-export const visitOptions: EChartsOption = {
-  color: ['#DC3087', '#74ACFC'],
-  tooltip: {
-    show: true,
-    trigger: 'axis',
-    axisPointer: {
-      type: 'shadow'
-    }
-  },
-  legend: {
-    top: 20,
-    right: 20,
-    textStyle: {
-      color: '#d6d6d6'
+export const buildVisitOptions = (sData1: number[], sData2: number[]): EChartsOption => {
+  return deepCopy({
+    color: ['#DC3087', '#74ACFC'],
+    tooltip: {
+      show: true,
+      trigger: 'axis',
+      axisPointer: {
+        type: 'shadow'
+      }
     },
-    selectedMode: false
-  },
-  grid: {
-    left: '3%',
-    right: '4%',
-    bottom: 0,
-    containLabel: true
-  },
-  xAxis: [
-    {
-      type: 'category',
-      axisLine: {
-        lineStyle: {
-          color: '#d6d6d6'
-        }
-      },
-      axisTick: {
-        show: true,
-        alignWithLabel: true
-      },
-      axisLabel: {
-        color: '#d6d6d6',
-        formatter: (text: string) => {
-          const { length } = text
-          const num = Math.ceil(length / 2)
-          const res = length > 3 ? text.substring(0, num) + '\n' + text.substring(num) : text
-          return res
-        }
-      },
-
-      data: ['兴隆社区', '建和社区', '杨家桥社区', '建华社区', '茶亭院社区', '建龙社区']
-    }
-  ],
-  yAxis: [
-    {
-      type: 'value',
-
-      axisLine: {
-        show: true,
-        lineStyle: {
-          color: '#d6d6d6'
-        }
-      },
-      axisLabel: {
+    legend: {
+      top: 20,
+      right: 20,
+      textStyle: {
         color: '#d6d6d6'
       },
-      splitLine: {
-        lineStyle: {
-          type: 'dashed',
-          color: '#cccccc50'
-        }
-      },
-      axisTick: {
-        show: true
-      }
-    }
-  ],
-  series: [
-    {
-      name: '本日到访人次',
-      type: 'bar',
-      stack: 'Ad',
-      emphasis: {
-        focus: 'series'
-      },
-      barWidth: 15,
-      data: [120, 132, 101, 134, 90, 230]
+      selectedMode: false
     },
-    {
-      name: '本周到访人次',
-      type: 'bar',
-      stack: 'Ad',
-      emphasis: {
-        focus: 'series'
+    grid: {
+      left: '3%',
+      right: '4%',
+      bottom: 0,
+      containLabel: true
+    },
+    xAxis: [
+      {
+        type: 'category',
+        axisLine: {
+          lineStyle: {
+            color: '#d6d6d6'
+          }
+        },
+        axisTick: {
+          show: true,
+          alignWithLabel: true
+        },
+        axisLabel: {
+          color: '#d6d6d6',
+          formatter: (text: string) => {
+            const { length } = text
+            const num = Math.ceil(length / 2)
+            const res = length > 3 ? text.substring(0, num) + '\n' + text.substring(num) : text
+            return res
+          }
+        },
+
+        data: ['兴隆社区', '建和社区', '杨家桥社区', '建华社区', '茶亭院社区', '建龙社区']
+      }
+    ],
+    yAxis: [
+      {
+        type: 'value',
+
+        axisLine: {
+          show: true,
+          lineStyle: {
+            color: '#d6d6d6'
+          }
+        },
+        axisLabel: {
+          color: '#d6d6d6'
+        },
+        splitLine: {
+          lineStyle: {
+            type: 'dashed',
+            color: '#cccccc50'
+          }
+        },
+        axisTick: {
+          show: true
+        }
+      }
+    ],
+    series: [
+      {
+        name: '本日到访人次',
+        type: 'bar',
+        stack: 'Ad',
+        emphasis: {
+          focus: 'series'
+        },
+        barWidth: 15,
+        data: sData1
       },
-      barWidth: 15,
-      data: [220, 182, 191, 234, 290, 330]
-    }
-  ]
+      {
+        name: '本周到访人次',
+        type: 'bar',
+        stack: 'Ad',
+        emphasis: {
+          focus: 'series'
+        },
+        barWidth: 15,
+        data: sData2
+      }
+    ]
+  })
 }
