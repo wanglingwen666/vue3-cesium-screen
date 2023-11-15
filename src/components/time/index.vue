@@ -1,13 +1,13 @@
 <script lang="ts" setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue'
-import moment from 'moment'
+import * as moment from 'moment'
 
 const props = withDefaults(defineProps<{ timeFormat?: string }>(), {
   timeFormat: 'YYYY-MM-DD HH:mm:ss'
 })
 
 const currentDate = ref(moment().format(props.timeFormat))
-const interval = ref(0)
+const interval = ref<NodeJS.Timeout>()
 const time = computed(() => currentDate.value.split(' ')[1])
 const date = computed(() => currentDate.value.split(' ')[0])
 
