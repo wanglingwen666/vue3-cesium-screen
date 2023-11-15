@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { onMounted } from 'vue'
 import * as Cesium from 'cesium'
 import { cesiumToken } from '../public/config/index'
 
@@ -32,6 +31,7 @@ onMounted(() => {
   const tileset = viewer.scene.primitives.add(
     new Cesium.Cesium3DTileset({
       url: Cesium.IonResource.fromAssetId(75343)
+      // url: Cesium.IonResource.fromAssetId(1415196)
     })
   )
   tileset.style = new Cesium.Cesium3DTileStyle({

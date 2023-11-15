@@ -1,5 +1,5 @@
 import { defineConfig } from 'vite'
-import path from 'path';
+import path from 'path'
 import vue from '@vitejs/plugin-vue'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
@@ -12,19 +12,20 @@ export default defineConfig({
     vue(),
     cesium(),
     AutoImport({
+      imports: ['vue', 'vue-router'], // 自动导入
+      dts: './auto-imports.d.ts', // peiz
       resolvers: [ElementPlusResolver()]
     }),
     Components({
-      resolvers: [ElementPlusResolver({ importStyle: "sass" })]
-    }),
-
+      resolvers: [ElementPlusResolver({ importStyle: 'sass' })]
+    })
   ],
-  pluginOptions: {
-    'style-resources-loader': {
-      preProcessor: 'scss',
-      patterns: []
-    }
-  },
+  // pluginOptions: {
+  //   'style-resources-loader': {
+  //     preProcessor: 'scss',
+  //     patterns: []
+  //   }
+  // },
   resolve: {
     alias: {
       '@': path.resolve(__dirname, 'src')

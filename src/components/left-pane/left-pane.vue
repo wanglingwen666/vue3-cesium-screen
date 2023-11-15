@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import { computed } from 'vue'
 import BoxPane from '@/components/box-pane/box-pane.vue'
 import InfoProgress from '@/components/info-progress/info-progress.vue'
 import EchartsWrap from '@/base-ui/eharts-wrap/echarts-wrap.vue'
