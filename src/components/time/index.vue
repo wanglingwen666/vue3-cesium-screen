@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue'
-import * as moment from 'moment'
+import moment from 'moment'
 
 const props = withDefaults(defineProps<{ timeFormat?: string }>(), {
   timeFormat: 'YYYY-MM-DD HH:mm:ss'

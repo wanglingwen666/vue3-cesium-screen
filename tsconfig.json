@@ -9,7 +9,7 @@
     "module": "ESNext",
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "skipLibCheck": true,
-    // "allowSyntheticDefaultImports": true, // 允许从没有设置默认导出的模块中默认导入。是一个实验性的特性，可能会在未来版本的 TypeScript 中发生变化或者被移除
+    "allowSyntheticDefaultImports": true, // 允许从没有设置默认导出的模块中默认导入。是一个实验性的特性，可能会在未来版本的 TypeScript 中发生变化或者被移除
     "moduleResolution": "node",
     // "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
