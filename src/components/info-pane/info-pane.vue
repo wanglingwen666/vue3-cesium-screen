@@ -1,15 +1,20 @@
 <script lang="ts" setup>
-const dataList = [
-  { id: 1, name: '实有人口', chainRatio: '+1.5%', basis: '+3.5%', value: '32378' },
-  { id: 2, name: '实有房屋', chainRatio: '+1.5%', basis: '+3.5%', value: '9654' },
-  { id: 3, name: '工地指数', chainRatio: '+1.5%', basis: '+3.5%', value: '64.8%' }
-]
+import CountUp from '@/base-ui/count-up/count-up.vue'
+const dataList = computed(() => {
+  return [
+    { id: 1, name: '实有人口', chainRatio: '+1.5%', basis: '+3.5%', value: 32378 },
+    { id: 2, name: '实有房屋', chainRatio: '+1.5%', basis: '+3.5%', value: 9654 },
+    { id: 3, name: '工地指数', chainRatio: '+1.5%', basis: '+3.5%', value: '64.8' }
+  ]
+})
 </script>
 
 <template>
   <div class="info-pane">
     <div v-for="item in dataList" :key="item.id">
-      <div class="value">{{ item.value }}</div>
+      <div class="value">
+        <count-up :value="item.value" />
+      </div>
       <div class="info">
         环比<span class="detail">{{ item.chainRatio }}</span> 同比<span class="detail">{{ item.basis }}</span>
       </div>
