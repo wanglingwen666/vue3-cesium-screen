@@ -6,6 +6,20 @@ import SafetyInfo from '@/components/safety-info/safety-info.vue'
 import { energyOptions, medicalOptions, buildVisitOptions } from './config/echart-options'
 import type { ISafeInfo } from '@/types/safety-info'
 
+interface IArea {
+  value: string
+  label: string
+  lat: number
+  lng: number
+  h: number
+}
+
+// const emit = defineEmits<{
+//   (event: 'selectChange'): void
+// }>()
+
+const emit = defineEmits(['selectChange'])
+
 const safeInfo: ISafeInfo = {
   title: '医疗机构',
   percent: 67,
@@ -15,27 +29,42 @@ const safeInfo: ISafeInfo = {
   ]
 }
 
-const areaValue = ref('区域1')
-const areaData = [
+const areaValue = ref('')
+const areaData: IArea[] = [
   {
     value: '区域1',
-    label: '区域1'
+    label: '区域1',
+    lat: 40.7069,
+    lng: -73.9847,
+    h: 500
   },
   {
     value: '区域2',
-    label: '区域2'
+    label: '区域2',
+    lat: 40.7019,
+    lng: -73.9827,
+    h: 500
   },
   {
     value: '区域3',
-    label: '区域3'
+    label: '区域3',
+    lat: 40.7162,
+    lng: -73.9627,
+    h: 500
   },
   {
     value: '区域4',
-    label: '区域4'
+    label: '区域4',
+    lat: 40.7371,
+    lng: -73.9422,
+    h: 500
   },
   {
     value: '区域5',
-    label: '区域5'
+    label: '区域5',
+    lat: 40.7039,
+    lng: -73.9937,
+    h: 500
   }
 ]
 
@@ -45,11 +74,13 @@ const computedVisitOptions = computed(() => {
 
 const data1 = ref([100, 132, 101, 134, 90, 230])
 const data2 = ref([220, 182, 191, 234, 290, 330])
-const onSelectChange = () => {
+const onSelectChange = (v: IArea) => {
   data1.value.forEach((_v, i) => {
     data1.value[i] = Math.ceil(Math.random() * 100)
     data2.value[i] = Math.ceil(Math.random() * 300)
   })
+  const { lng, lat, h } = v
+  emit('selectChange', { lng, lat, h })
 }
 </script>
 
@@ -76,7 +107,7 @@ const onSelectChange = () => {
       <div class="area">
         <div class="area-title">选择区域</div>
         <el-select class="area-select" v-model="areaValue" placeholder="请选择" @change="onSelectChange">
-          <el-option v-for="item in areaData" :key="item.value" :label="item.label" :value="item.value" />
+          <el-option v-for="item in areaData" :key="item.value" :label="item.label" :value="item" />
         </el-select>
       </div>
       <div class="bar-charts">
@@ -161,6 +192,9 @@ const onSelectChange = () => {
             border-radius: 0;
             .el-input__inner {
               color: #000;
+              &::-webkit-input-placeholder {
+                color: #00000090;
+              }
             }
             .el-select__caret {
               color: #000;
